@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  redis:
+    image: redis:7.0.11
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data:/data
+      - ./logs:/logs
+    command: redis-server --save 60 1 --requirepass redis --loglevel warning
