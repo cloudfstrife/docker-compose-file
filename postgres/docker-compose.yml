@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:16.0
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./backup:/data/backup
+      - ./testing.sql:/docker-entrypoint-initdb.d/testing.sql
+    environment:
+      TZ: Asia/Shanghai
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    command:
+      - "-c"
+      - "shared_buffers=256MB"
+      - "-c"
+      - "max_connections=200"
+    shm_size: 1GB
+    restart: always
+  adminer:
+    image: adminer:4.8.1
+    ports:
+      - 8080:8080
+    restart: always
