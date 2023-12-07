@@ -16,5 +16,6 @@ services:
     volumes:
       - ./config.yml:/etc/influxdb2/config.yml
       - ./data:/var/lib/influxdb2
+      - ./scripts:/docker-entrypoint-initdb.d
       - ./backup:/data/backup
     restart: always
