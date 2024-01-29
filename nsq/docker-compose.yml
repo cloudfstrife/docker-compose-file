@@ -7,16 +7,16 @@ services:
     environment:
       TZ: Asia/Shanghai
     ports:
-      - "4160"
-      - "4161"
+      - 4160:4160
+      - 4161:4161
   nsqd:
     image: nsqio/nsq:v1.3.0
     command: /nsqd --lookupd-tcp-address=nsqlookupd:4160
     environment:
       TZ: Asia/Shanghai
     ports:
-      - "4150"
-      - "4151"
+      - 4150:4150
+      - 4151:4151
     depends_on:
       - nsqlookupd
   nsqadmin:
@@ -25,6 +25,6 @@ services:
     environment:
       TZ: Asia/Shanghai
     ports:
-      - "4171"
+      - 4171:4171
     depends_on:
       - nsqlookupd
