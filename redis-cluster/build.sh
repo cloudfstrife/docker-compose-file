@@ -31,7 +31,6 @@ EOF
     done
 
     cat << EOF | tee -a ${node}/docker-compose.yml > /dev/null
-version: "3.9"
 services:
 EOF
     for i in $(seq 1 ${INS_PER_NODE});do                                      \

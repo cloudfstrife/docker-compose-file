@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   node-03:
     image: elasticsearch:8.10.2
