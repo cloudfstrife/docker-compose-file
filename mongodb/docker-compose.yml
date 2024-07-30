@@ -1,15 +1,15 @@
 services:
   mongo:
-    image: mongo:7.0.1
+    image: mongodb/mongodb-community-server:7.0.12-ubuntu2204
     ports:
-      - 27017:27017
+      - 27012:27017
     volumes:
       - ./db:/data/db
       - ./backup:/data/backup
     environment: 
       TZ: Asia/Shanghai
-      MONGO_INITDB_ROOT_USERNAME: mongo
-      MONGO_INITDB_ROOT_PASSWORD: mongo
-      MONGO_INITDB_DATABASE: testing
+      MONGODB_INITDB_ROOT_USERNAME: user
+      MONGODB_INITDB_ROOT_PASSWORD: pass
+    user: root
     command: --wiredTigerCacheSizeGB 10.0
     restart: always
