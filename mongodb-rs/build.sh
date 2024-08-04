@@ -4,7 +4,7 @@ FOLDER=`cd $(dirname $0);pwd`
 
 # Node
 INS_PER_NODE=5
-NODE_LIST=( "192.168.43.222" )
+NODE_LIST=( "10.0.0.1" "10.0.0.2" )
 
 # image 
 IMAGE=mongodb/mongodb-community-server:7.0.12-ubuntu2204
@@ -103,9 +103,9 @@ show(){
   for node in ${NODE_LIST[@]};do                                                                    \
     for i in $(seq 1 ${INS_PER_NODE});do                                                            \
       if [ ${INDEX} -eq 0 ];then 
-        printf "%s:%d" ${node} `expr ${PORT_START} + ${i} - 1`
+        printf "%s:%d" ${node} `expr ${PORT_START} + ${i}`
       else
-        printf ",%s:%d" ${node} `expr ${PORT_START} + ${i} - 1`
+        printf ",%s:%d" ${node} `expr ${PORT_START} + ${i}`
       fi
       INDEX=$(expr ${INDEX} + 1)
     done
