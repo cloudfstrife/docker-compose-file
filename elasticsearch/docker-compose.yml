@@ -1,0 +1,13 @@
+services:
+  elasticsearch:
+    image: elasticsearch:8.10.2
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - ./data:/usr/share/elasticsearch/data
+      - ./plugins:/usr/share/elasticsearch/plugins
+    environment:
+      TZ: Asia/Shanghai
+      discovery.type: single-node
+    restart: always

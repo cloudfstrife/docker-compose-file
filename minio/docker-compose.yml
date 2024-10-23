@@ -1,0 +1,16 @@
+services:
+  minio:
+    image: quay.io/minio/minio:RELEASE.2024-06-29T01-20-47Z
+    environment:
+      TZ: Asia/Shanghai
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: password
+      MINIO_SERVER_URL: http://127.0.0.1:9000
+    ports:
+      - 9000:9000
+      - 9001:9001
+    volumes:
+      - ./data:/data
+    restart: always
+    command:
+      ["server", "/data", "--console-address", ":9001", "-address", ":9000"]

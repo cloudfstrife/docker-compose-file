@@ -1,0 +1,19 @@
+services:
+  node-01:
+    image: elasticsearch:8.10.2
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - ./node-01/data:/usr/share/elasticsearch/data
+      - ./node-01/plugins:/usr/share/elasticsearch/plugins
+    environment:
+      TZ: Asia/Shanghai
+      node.name: node-01
+      network.publish_host: 192.168.0.xx
+      network.host: 0.0.0.0
+      discovery.seed_hosts: 192.168.0.xx,192.168.0.yy,192.168.0.zz
+      cluster.initial_master_nodes: 192.168.0.xx,192.168.0.yy,192.168.0.zz
+      cluster.name: cluster-x
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+    restart: always

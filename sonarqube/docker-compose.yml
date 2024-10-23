@@ -1,0 +1,35 @@
+services:
+  sonarqube:
+    image: sonarqube:10.2.1-community
+    environment:
+      TZ: Asia/Shanghai
+      SONAR_JDBC_URL: jdbc:postgresql://postgres:5432/sonar
+      SONAR_JDBC_USERNAME: postgres
+      SONAR_JDBC_PASSWORD: postgres
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./sonarqube/data:/opt/sonarqube/data
+      - ./sonarqube/logs:/opt/sonarqube/data
+      - ./sonarqube/extensions:/opt/sonarqube/extensions
+    command: 
+    depends_on:
+      - postgres
+    restart: always
+  postgres:
+    image: postgres:16.0
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+      - ./postgres/backup:/data/backup
+    environment:
+      TZ: Asia/Shanghai
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sonar
+    command:
+      - "-c"
+      - "shared_buffers=256MB"
+      - "-c"
+      - "max_connections=200"
+    shm_size: 1GB
+    restart: always

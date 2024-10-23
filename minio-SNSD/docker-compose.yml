@@ -1,0 +1,16 @@
+services:
+  minio:
+    image: quay.io/minio/minio:RELEASE.2024-06-29T01-20-47Z
+    environment:
+      TZ: Asia/Shanghai
+      MINIO_CONFIG_ENV_FILE: /etc/minio.env
+      MINIO_SERVER_URL: http://127.0.0.1:9000
+    ports:
+      - 9000:9000
+      - 9001:9001
+    volumes:
+      - ./data:/data
+      - ./minio.env:/etc/minio.env
+    restart: always
+    command:
+      ["minio","server","--console-address", ":9001", "-address", ":9000"]
