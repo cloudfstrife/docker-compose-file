@@ -1,0 +1,10 @@
+services:
+  httpd:
+    image: httpd:2.4.57
+    ports:
+      - 80:80
+    volumes:
+      - ./htdocs:/usr/local/apache2/htdocs/ 
+    environment:
+      TZ: Asia/Shanghai
+    restart: always

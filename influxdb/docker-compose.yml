@@ -1,0 +1,20 @@
+services:
+  influxdb:
+    image: influxdb:2.7.4
+    environment:
+      TZ: Asia/Shanghai
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: influxdb
+      DOCKER_INFLUXDB_INIT_PASSWORD: influxdb
+      DOCKER_INFLUXDB_INIT_ORG: influxdb
+      DOCKER_INFLUXDB_INIT_BUCKET: influxdb
+      DOCKER_INFLUXDB_INIT_RETENTION: 
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: influxdb
+    ports:
+      - 8086:8086
+    volumes:
+      - ./config.yml:/etc/influxdb2/config.yml
+      - ./data:/var/lib/influxdb2
+      - ./scripts:/docker-entrypoint-initdb.d
+      - ./backup:/data/backup
+    restart: always

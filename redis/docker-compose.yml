@@ -1,0 +1,12 @@
+services:
+  redis:
+    image: redis:7.2.1
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - 6379:6379
+    volumes:
+      - ./data:/data
+      - ./logs:/logs
+    command: redis-server --save 60 1 --requirepass redis --loglevel warning
+    restart: always
