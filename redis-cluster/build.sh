@@ -6,16 +6,20 @@ set -u
 FOLDER=`cd $(dirname $0);pwd`
 
 # node list
-NODE_LIST=( "10.0.0.1:6380" "10.0.0.1:6382" "10.0.0.1:6384" "10.0.0.1:6386" "10.0.0.1:6388" "10.0.0.1:6390")
-REDIS_IMAGE=redis:7.2.5
-PASSWD=password
+NODE_LIST="172.30.245.167:6380 172.30.245.167:6382 172.30.245.167:6384 172.30.245.167:6386 172.30.245.167:6388 172.30.245.167:6390"
+REDIS_IMAGE=redis:7.4.1
+MASTER_USER=master
+MASTER_PASSWD=password
+
+REDIS_USER=redis
+REDIS_PASSWD=password
 
 RED="\u001b[31m"
 RESET="\u001b[0m"
 
 # generate conf
 generate(){
-  for NODE in ${NODE_LIST[@]}
+  for NODE in ${NODE_LIST}
   do
     HOST=${NODE%%:*}
     PORT=${NODE##*:}
@@ -23,8 +27,9 @@ generate(){
     mkdir -p ${FOLDER}/${HOST}/node-${PORT}/conf
     cat << EOF | tee -a ${FOLDER}/${HOST}/node-${PORT}/conf/redis.conf >/dev/null
 port ${PORT}
-masterauth ${PASSWD}
-requirepass ${PASSWD}
+masteruser ${MASTER_USER}
+masterauth ${MASTER_PASSWD}
+aclfile /etc/redis/redis.acl
 bind 0.0.0.0
 cluster-enabled yes
 cluster-config-file nodes.conf
@@ -37,6 +42,11 @@ appendfsync everysec
 no-appendfsync-on-rewrite no
 auto-aof-rewrite-percentage 100
 auto-aof-rewrite-min-size 64mb
+EOF
+
+  cat << EOF | tee -a ${FOLDER}/${HOST}/node-${PORT}/conf/redis.acl > /dev/null
+user ${MASTER_USER} on >${MASTER_PASSWD} ~* &* +@all
+user ${REDIS_USER} on >${REDIS_PASSWD} ~* &* +@all
 EOF
 
     if [ ! -f "${FOLDER}/${HOST}/docker-compose.yaml" ]
@@ -58,10 +68,14 @@ EOF
       - ./node-${PORT}/conf/redis.conf:/usr/local/etc/redis/redis.conf
       - ./node-${PORT}/data:/data
       - ./node-${PORT}/logs:/logs
+      - ./node-${PORT}/conf/redis.acl:/etc/redis/redis.acl
     command: 
       - redis-server
       - /usr/local/etc/redis/redis.conf
 EOF
+
+
+
   done
 }
 
@@ -69,9 +83,10 @@ show(){
   printf "create cluster\n"
   printf "${RED}--------------------------------------------------------------------------------${RESET}\n"
 
-  FIRST_NODE_PORT=${NODE_LIST[0]##*:}
-  printf "docker compose exec node-%d redis-cli -a %s --cluster create %s\n" ${FIRST_NODE_PORT} ${PASSWD} "\\"
-  for node in ${NODE_LIST[@]}
+  FIRST_NODE=${NODE_LIST%%\ *}
+  FIRST_NODE_PORT=${FIRST_NODE##*:}
+  printf "docker compose exec node-%d redis-cli -p %d --user %s --pass %s --cluster create %s\n" ${FIRST_NODE_PORT} ${FIRST_NODE_PORT} ${MASTER_USER} ${MASTER_PASSWD} "\\"
+  for node in ${NODE_LIST}
   do
     printf "%s %s\n" ${node} "\\"
   done
@@ -80,12 +95,13 @@ show(){
   printf "connect node\n"
   printf "${RED}--------------------------------------------------------------------------------${RESET}\n"
 
-  for NODE in ${NODE_LIST[@]}
+  for NODE in ${NODE_LIST}
   do
     HOST=${NODE%%:*}
     PORT=${NODE##*:}
     printf "%s\n" ${HOST}
-    printf "docker compose exec node-%d redis-cli -a %s -p %d \n\n" ${PORT} ${PASSWD} ${PORT}
+    printf "docker compose exec node-%d redis-cli -p %d -c \n" ${PORT} ${PORT}
+    printf "auth %s %s\n\n" ${REDIS_USER} ${REDIS_PASSWD}
   done
   
   printf "${RED}--------------------------------------------------------------------------------${RESET}\n"
