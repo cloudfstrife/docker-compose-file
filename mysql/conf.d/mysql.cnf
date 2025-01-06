@@ -61,10 +61,10 @@ join_buffer_size = 8M
 # 如果线程重新被请求，那么请求将从缓存中读取,如果缓存中是空的或者是新的请求，那么这个线程将被重新创建,如果有很多新的线程，
 # 增加这个值可以改善系统性能.通过比较Connections和Threads_created状态的变量，可以看到这个变量的作用。(–>表示要调整的值)
 # 根据物理内存设置规则如下：
-# 1G  —> 8
-# 2G  —> 16
-# 3G  —> 32
-# 大于3G  —> 64
+# 1G —> 8
+# 2G —> 16
+# 3G —> 32
+# 大于3G —> 64
 thread_cache_size = 8
 
 # 指定用于索引的缓冲区大小，增加它可得到更好处理的索引(对所有读和多重写)，到你能负担得起那样多。如果你使它太大，
@@ -177,6 +177,39 @@ interactive_timeout = 28800
 # 在系统运行一段时间后，可以通过show processlist命令查看当前系统的连接状态，如果发现有大量的sleep状态的连接进程，则说明该参数设置的过大，
 # 可以进行适当的调整小些。要同时设置interactive_timeout和wait_timeout才会生效。
 wait_timeout = 28800
+
+# 设置 sql_mode
+# ONLY_FULL_GROUP_BY
+# 对于GROUP BY聚合操作，如果在SELECT中的列，没有在GROUP BY中出现，那么这个SQL是不合法的，因为列不在GROUP BY从句中
+
+# NO_AUTO_VALUE_ON_ZERO
+# 该值影响自增长列的插入。默认设置下，插入0或NULL代表生成下一个自增长值。如果用户希望插入的值为0，而该列又是自增长的，那么这个选项就有用了。
+
+# STRICT_TRANS_TABLES
+# 
+# 在该模式下，如果一个值不能插入到一个事务中，则中断当前的操作，对非事务表不做限制
+
+# NO_ZERO_IN_DATE
+# 在严格模式下，不允许日期和月份为零
+
+# NO_ZERO_DATE
+# 设置该值，mysql数据库不允许插入零日期，插入零日期会抛出错误而不是警告
+
+# ERROR_FOR_DIVISION_BY_ZERO
+# 在insert或update过程中，如果数据被零除，则产生错误而非警告。如果未给出该模式，那么数据被零除时Mysql返回NULL
+
+# NO_AUTO_CREATE_USER
+# 禁止GRANT创建密码为空的用户
+
+# NO_ENGINE_SUBSTITUTION
+# 如果需要的存储引擎被禁用或未编译，那么抛出错误。不设置此值时，用默认的存储引擎替代，并抛出一个异常
+
+# PIPES_AS_CONCAT
+# 将"||"视为字符串的连接操作符而非或运算符，这和Oracle数据库是一样是，也和字符串的拼接函数Concat想类似
+
+# ANSI_QUOTES
+# 启用ANSI_QUOTES后，不能用双引号来引用字符串，因为它被解释为识别符
+sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
 
 [mysql]
 default-character-set=utf8mb4
