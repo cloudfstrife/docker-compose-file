@@ -14,6 +14,6 @@ services:
       - ./data-03:/data-3
       - ./data-04:/data-4
       - ./minio.env:/etc/minio.env
-    restart: always
     command:
       ["minio","server","--console-address", ":9001", "-address", ":9000"]
+    restart: on-failure

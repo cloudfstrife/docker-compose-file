@@ -8,4 +8,4 @@ services:
       - ./logs:/usr/local/tomcat/logs
     environment:
       TZ: Asia/Shanghai
-    restart: always
+    restart: on-failure

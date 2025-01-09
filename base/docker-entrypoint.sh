@@ -1,8 +1,11 @@
 #!/bin/sh
 
-if [ -d  /data/init/before ]
+BEFORE_FOLDER=/init/before
+AFTER_FOLDER=/init/after
+
+if [ -d "${BEFORE_FOLDER}" ]
 then
-    for file in /data/init/before/*.sh
+    for file in ${BEFORE_FOLDER}/*.sh
     do
         . ${file}
     done
@@ -10,9 +13,9 @@ fi
 
 exec $@
 
-if [ -d  /data/init/after ]
+if [ -d "${AFTER_FOLDER}" ]
 then
-    for file in /data/init/after/*.sh
+    for file in ${AFTER_FOLDER}/*.sh
     do
         . ${file}
     done

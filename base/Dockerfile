@@ -1,9 +1,9 @@
 FROM debian:12.8
 
-VOLUME [ "/data/init/before", "/data/init/after" ]
+COPY docker-entrypoint.sh /entrypoint/
 
-COPY docker-entrypoint.sh /usr/local/bin
+VOLUME [ "/init/before", "/init/after" ]
 
-ENTRYPOINT [ "/usr/local/bin/docker-entrypoint.sh" ]
+ENTRYPOINT [ "sh", "/entrypoint/docker-entrypoint.sh" ]
 
 CMD [ "/bin/sh" ]

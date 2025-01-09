@@ -10,4 +10,4 @@ services:
       TZ: Asia/Shanghai
       NGINX_HOST: 
       NGINX_PORT: 80
-    restart: always
+    restart: on-failure

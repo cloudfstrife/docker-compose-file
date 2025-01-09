@@ -23,7 +23,7 @@ services:
             --log-level info 
     networks:
       - etcd
-    restart: always
+    restart: on-failure
   node2:
     image: quay.io/coreos/etcd:v3.5.9
     ports:
@@ -46,7 +46,7 @@ services:
             --log-level info 
     networks:
       - etcd
-    restart: always
+    restart: on-failure
   node3:
     image: quay.io/coreos/etcd:v3.5.9
     ports:
@@ -69,4 +69,4 @@ services:
             --log-level info 
     networks:
       - etcd
-    restart: always
+    restart: on-failure

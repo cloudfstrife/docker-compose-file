@@ -17,3 +17,4 @@ services:
       - "-c"
       - "config_file=/etc/postgresql/postgresql.conf"
     shm_size: 1GB
+    restart: on-failure

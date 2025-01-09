@@ -7,6 +7,7 @@ services:
     ports:
       - 4160:4160
       - 4161:4161
+    restart: on-failure
   nsqd:
     image: nsqio/nsq:v1.3.0
     command: /nsqd --lookupd-tcp-address=nsqlookupd:4160
@@ -17,6 +18,7 @@ services:
       - 4151:4151
     depends_on:
       - nsqlookupd
+    restart: on-failure
   nsqadmin:
     image: nsqio/nsq:v1.3.0
     command: /nsqadmin --lookupd-http-address=nsqlookupd:4161
@@ -26,3 +28,4 @@ services:
       - 4171:4171
     depends_on:
       - nsqlookupd
+    restart: on-failure

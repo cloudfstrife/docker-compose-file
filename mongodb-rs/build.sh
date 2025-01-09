@@ -66,7 +66,7 @@ EOF
       - "${RS}"
       - "--keyFile"
       - /data/${KEY_FILE}
-    restart: always
+    restart: on-failure
 EOF
   done
 }

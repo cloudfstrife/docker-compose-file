@@ -12,4 +12,4 @@ services:
       - ./backup:/data/backup
       - ./conf.d/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
       - ./initdb.d:/docker-entrypoint-initdb.d
-    restart: always
+    restart: on-failure

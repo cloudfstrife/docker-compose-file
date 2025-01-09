@@ -32,4 +32,4 @@ services:
       - "-c"
       - "max_connections=200"
     shm_size: 1GB
-    restart: always
+    restart: on-failure

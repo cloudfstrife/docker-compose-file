@@ -17,4 +17,4 @@ services:
       - ./data:/var/lib/influxdb2
       - ./scripts:/docker-entrypoint-initdb.d
       - ./backup:/data/backup
-    restart: always
+    restart: on-failure

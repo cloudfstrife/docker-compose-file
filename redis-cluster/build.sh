@@ -72,6 +72,7 @@ EOF
     command: 
       - redis-server
       - /usr/local/etc/redis/redis.conf
+    restart: on-failure
 EOF
 
 
