@@ -1,3 +1,3 @@
 CREATE USER testing WITH PASSWORD 'testing';
-CREATE DATABASE testing;
+CREATE DATABASE testing OWNER testing;
 GRANT ALL PRIVILEGES ON DATABASE testing TO testing;
