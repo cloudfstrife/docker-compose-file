@@ -1,0 +1,10 @@
+services:
+  grafana:
+    image: grafana/grafana:11.6.1
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - 3000:3000
+    volumes:
+      - ./data:/var/lib/grafanas
+    restart: on-failure

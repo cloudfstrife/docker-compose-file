@@ -1,0 +1,19 @@
+services:
+  prometheus:
+    image: prom/prometheus:v3.3.0
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/data:/data
+    restart: on-failure
+  grafana:
+    image: grafana/grafana:11.6.1
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/data:/var/lib/grafanas
+    restart: on-failure

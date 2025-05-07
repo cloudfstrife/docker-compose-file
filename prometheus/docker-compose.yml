@@ -1,0 +1,10 @@
+services:
+  prometheus:
+    image: prom/prometheus:v3.3.0
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - 9090:9090
+    volumes:
+      - ./data:/data
+    restart: on-failure
