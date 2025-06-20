@@ -12,4 +12,9 @@ services:
       - "run"
       - "-c"
       - "/etc/v2ray/config.json"
+    networks:
+      - bridge
     restart: on-failure
+networks:
+  bridge:
+    external: true
