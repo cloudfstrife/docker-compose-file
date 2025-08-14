@@ -1,0 +1,43 @@
+services:
+  docker:
+    image: docker:28.3.2
+    environment:
+      TZ: Asia/Shanghai
+      DOCKER_TLS_CERTDIR: certs
+    ports:
+      - 2376:2376
+    volumes:
+      - ./docker-certs:/certs/client
+      - ./data:/var/jenkins_home
+    restart: on-failure
+    networks:
+      - jenkins
+    privileged: true
+    command:
+      - "--storage-driver"
+      - "overlay2"
+  jenkins:
+    image: jenkins-server:2.520-jdk21
+    build: 
+      context: .
+      dockerfile: Dockerfile.jenkins
+    environment:
+      TZ: Asia/Shanghai
+      DOCKER_CERT_PATH: certs
+      DOCKER_HOST: tcp://docker:2376
+      DOCKER_TLS_VERIFY: 1
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - ./docker-certs:/certs/client:ro
+      - ./data:/var/jenkins_home
+    restart: on-failure
+    networks:
+      - jenkins
+networks:
+  jenkins:
+    name: jenkins-net
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
